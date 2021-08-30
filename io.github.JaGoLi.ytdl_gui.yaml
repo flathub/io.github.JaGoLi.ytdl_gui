@@ -23,7 +23,6 @@ modules:
         url: https://code.videolan.org/videolan/x264.git
         branch: master
         commit: ae03d92b52bb7581df2e75d571989cb1ecd19cbd
-
   - name: ffmpeg
     config-opts:
       - --enable-gpl
@@ -44,15 +43,18 @@ modules:
       - type: archive
         url: https://ffmpeg.org/releases/ffmpeg-4.4.tar.xz
         sha256: 06b10a183ce5371f915c6bb15b7b1fffbe046e8275099c96affc29e17645d909
-
   - python3-youtube-dl.json
-
   - name: youtubedl-gui
     buildsystem: cmake
     sources:
-      - type: archive
-        url: https://github.com/JaGoLi/ytdl-gui/archive/refs/tags/3.0.tar.gz
-        sha256: 93ce39a00b2a66dbdfa7f7be21bee19f3f1ce0ad6f727464d9245e27072785a9
+      - type: git
+        url: https://github.com/JaGoLi/ytdl-gui.git
+        tag: "3.0"
+        commit: 6ea9ad84b476bf39e35cc3b2ed769c18152cbbda
+        x-checker-data:
+          type: git
+          tag-pattern: (\d.\d)
+        disable-submodules: true
       - type: file
         path: io.github.JaGoLi.ytdl_gui.metainfo.xml
     post-install:
