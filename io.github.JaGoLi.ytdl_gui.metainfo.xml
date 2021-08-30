@@ -22,9 +22,12 @@
   </screenshots>
   <content_rating type="oars-1.1" />
   <releases>
-        <release version="2.5" date="2021-5-3">
+        <release version="3.0" date="2021-5-3">
         <description>
-            <p>This version fixes some bugs, adds option for vorbis codec and has a new icon.</p>
+            <p>This release features two major improvements:</p>
+               <p>Saving and reloading a user's previously used options.</p>
+               <p>Saving and reloading a user's previously used options.</p>
+            <p>There are also a few minor bugfixes and improvements to make the code more readable.</p>
         </description>
         </release>
     </releases>
