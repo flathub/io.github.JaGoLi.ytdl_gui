@@ -3,7 +3,6 @@ runtime: org.kde.Platform
 runtime-version: "5.15"
 sdk: org.kde.Sdk
 command: youtubedl-gui
-
 finish-args:
   - --share=ipc
   - --socket=fallback-x11
@@ -40,9 +39,10 @@ modules:
       - --disable-programs
       - --disable-devices
     sources:
-      - type: archive
-        url: https://ffmpeg.org/releases/ffmpeg-4.4.tar.xz
-        sha256: 06b10a183ce5371f915c6bb15b7b1fffbe046e8275099c96affc29e17645d909
+      - type: git
+        url: https://git.ffmpeg.org/ffmpeg
+        tag: n4.4
+        commit: dc91b913b6260e85e1304c74ff7bb3c22a8c9fb1
   - python3-youtube-dl.json
   - name: youtubedl-gui
     buildsystem: cmake
@@ -53,7 +53,7 @@ modules:
         commit: 6ea9ad84b476bf39e35cc3b2ed769c18152cbbda
         x-checker-data:
           type: git
-          tag-pattern: (\d.\d)
+          tag-pattern: (\d+\.\d+)
         disable-submodules: true
       - type: file
         path: io.github.JaGoLi.ytdl_gui.metainfo.xml
