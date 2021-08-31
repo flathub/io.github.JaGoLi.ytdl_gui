@@ -3,13 +3,15 @@ runtime: org.kde.Platform
 runtime-version: "5.15"
 sdk: org.kde.Sdk
 command: youtubedl-gui
+rename-icon: youtubedl-gui
+rename-desktop-file: youtubedl-gui.desktop
 finish-args:
   - --share=ipc
   - --socket=fallback-x11
   - --socket=wayland
   - --share=network
   - --device=dri
-  - --filesystem=home
+  #- --filesystem=home
 modules:
   - name: x264
     config-opts:
@@ -17,11 +19,12 @@ modules:
       - --enable-shared
     cleanup:
       - /include
+      - /lib/pkgconfig
     sources:
       - type: git
         url: https://code.videolan.org/videolan/x264.git
-        branch: master
-        commit: ae03d92b52bb7581df2e75d571989cb1ecd19cbd
+        branch: stable
+        commit: 5db6aa6cab1b146e07b60cc1736a01f21da01154
   - name: ffmpeg
     config-opts:
       - --enable-gpl
@@ -43,7 +46,22 @@ modules:
         url: https://git.ffmpeg.org/ffmpeg
         tag: n4.4
         commit: dc91b913b6260e85e1304c74ff7bb3c22a8c9fb1
-  - python3-youtube-dl.json
+    cleanup:
+      - /share/ffmpeg/*
+      - /share/include
+  - name: python3-youtube-dl
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links=file://${PWD} --prefix=${FLATPAK_DEST} youtube-dl --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/c6/75/05979677d9abc76851d13d8db3951e39017ac223545adab6e8576fa0cbe7/youtube_dl-2021.6.6.tar.gz
+        sha256: cb2d3ee002158ede783e97a82c95f3817594df54367ea6a77ce5ceea4772f0ab
+        x-checker-data:
+          type: pypi
+          name: youtube_dl
+    cleanup:
+      - /share/doc/*
   - name: youtubedl-gui
     buildsystem: cmake
     sources:
@@ -58,14 +76,6 @@ modules:
       - type: file
         path: io.github.JaGoLi.ytdl_gui.metainfo.xml
     post-install:
-      - mv /app/share/icons/hicolor/64x64/apps/youtubedl-gui.png /app/share/icons/hicolor/64x64/apps/io.github.JaGoLi.ytdl_gui.png
-      - mv /app/share/icons/hicolor/128x128/apps/youtubedl-gui.png /app/share/icons/hicolor/128x128/apps/io.github.JaGoLi.ytdl_gui.png
-      - mv /app/share/icons/hicolor/256x256/apps/youtubedl-gui.png /app/share/icons/hicolor/256x256/apps/io.github.JaGoLi.ytdl_gui.png
-      - mv /app/share/icons/hicolor/32x32/apps/youtubedl-gui.png /app/share/icons/hicolor/32x32/apps/io.github.JaGoLi.ytdl_gui.png
-      - mv /app/share/icons/hicolor/512x512/apps/youtubedl-gui.png /app/share/icons/hicolor/512x512/apps/io.github.JaGoLi.ytdl_gui.png
-      - mv /app/share/icons/hicolor/16x16/apps/youtubedl-gui.png /app/share/icons/hicolor/16x16/apps/io.github.JaGoLi.ytdl_gui.png
-      - mv /app/share/applications/youtubedl-gui.desktop /app/share/applications/io.github.JaGoLi.ytdl_gui.desktop
-      - sed -i '3d' /app/share/applications/io.github.JaGoLi.ytdl_gui.desktop
-      - desktop-file-edit --set-key='Icon' --set-value='io.github.JaGoLi.ytdl_gui' /app/share/applications/io.github.JaGoLi.ytdl_gui.desktop
-      - desktop-file-edit --set-key='Exec' --set-value='youtubedl-gui' /app/share/applications/io.github.JaGoLi.ytdl_gui.desktop
+      - desktop-file-edit --set-key='Icon' --set-value='io.github.JaGoLi.ytdl_gui' /app/share/applications/youtubedl-gui.desktop
+      - desktop-file-edit --set-key='Exec' --set-value='youtubedl-gui' /app/share/applications/youtubedl-gui.desktop
       - install -D io.github.JaGoLi.ytdl_gui.metainfo.xml -t /app/share/metainfo/
