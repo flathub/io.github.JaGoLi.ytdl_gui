@@ -11,7 +11,7 @@ finish-args:
   - --socket=wayland
   - --share=network
   - --device=dri
-  #- --filesystem=home
+  - --filesystem=home
 modules:
   - name: x264
     config-opts:
