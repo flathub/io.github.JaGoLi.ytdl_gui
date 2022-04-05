@@ -1,6 +1,6 @@
 app-id: io.github.JaGoLi.ytdl_gui
 runtime: org.kde.Platform
-runtime-version: "5.15"
+runtime-version: "5.15-21.08"
 sdk: org.kde.Sdk
 command: youtubedl-gui
 rename-icon: youtubedl-gui
